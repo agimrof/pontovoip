@@ -37,24 +37,25 @@ include('conexao.php');
     </tr>
     <?php
     $cpf = $_POST['cpf'];
-    $data_inicial = $_POST['ano']."-".$_POST['mes']."-".'01';
-    $data_final = $_POST['ano']."-".$_POST['mes']."-".'31';    
+    $data_inicial = $_POST['ano'] . "-" . $_POST['mes'] . "-" . '01';
+    $data_final = $_POST['ano'] . "-" . $_POST['mes'] . "-" . '31';
     $sql = "select * from tb_queuelog where time >= '$data_inicial' and time <= '$data_final' and (event = 'addagent' or event = 'removeagent') and data1 = '$cpf'";
-    
-    $result = mysqli_query($conexao, $sql);
-    while ($resultados = mysqli_fetch_array($result)) {
-        $data = $resultados['time'];
-        $ramal = $resultados['agent'];
-        $evento = $resultados['event'];
-        $cpf = $resultados['data1'];
-        ?>
-        <tr>
-            <td align="center"><?php echo substr($data, 0,19) ?></td>
-            <td align="center"><?php echo $ramal ?></td>
-            <td align="center"><?php echo $cpf ?></td>
-            <td align="center"><?php echo ($evento == "ADDAGENT" ? "ENTROU" : "SAIU") ?></td>
-        </tr>
-        <?php
+    if ($cpf != null) {
+        $result = mysqli_query($conexao, $sql);
+        while ($resultados = mysqli_fetch_array($result)) {
+            $data = $resultados['time'];
+            $ramal = $resultados['agent'];
+            $evento = $resultados['event'];
+            $cpf = $resultados['data1'];
+            ?>
+            <tr>
+                <td align="center"><?php echo substr($data, 0, 19) ?></td>
+                <td align="center"><?php echo $ramal ?></td>
+                <td align="center"><?php echo $cpf ?></td>
+                <td align="center"><?php echo ($evento == "ADDAGENT" ? "ENTROU" : "SAIU") ?></td>
+            </tr>
+            <?php
+        }
     }
     ?>
 </table>
