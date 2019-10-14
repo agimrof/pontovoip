@@ -37,11 +37,22 @@ include('conexao.php');
     </tr>
     <?php
     $cpf = $_POST['cpf'];
+    $ano = $_POST['ano'];
+    $mes = $_POST['mes'];
     $data_inicial = $_POST['ano'] . "-" . $_POST['mes'] . "-" . '01';
     $data_final = $_POST['ano'] . "-" . $_POST['mes'] . "-" . '31';
     $sql = "select * from tb_queuelog where time >= '$data_inicial' and time <= '$data_final' and (event = 'addagent' or event = 'removeagent') and data1 = '$cpf'";
+    $sqlNome = "select nome from tb_usuario where cpf = $cpf";
     if ($cpf != null) {
+        $resultnome = mysqli_query($conexao, $sqlNome);
         $result = mysqli_query($conexao, $sql);
+        $fabricante = mysqli_fetch_array($resultnome);
+        $nome = $fabricante['nome'];
+        ?>
+        <h3 align="center">
+            <?php echo "Relatório do mês $mes/$ano do usuário $nome"; ?>
+        </h3>
+        <?php
         while ($resultados = mysqli_fetch_array($result)) {
             $data = $resultados['time'];
             $ramal = $resultados['agent'];
@@ -54,10 +65,9 @@ include('conexao.php');
                 <td align="center"><?php echo $cpf ?></td>
                 <td align="center"><?php echo ($evento == "ADDAGENT" ? "ENTROU" : "SAIU") ?></td>
             </tr>
-            <?php
-        }
+        <?php
     }
-    ?>
-</table>
-<?php
+}
 ?>
+</table>
+    <?php ?>
