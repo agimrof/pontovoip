@@ -1,7 +1,11 @@
 <?php
+session_start();
 include('conexao.php');
+include('verifica_login.php');
 ?>
 <h1 align="center">RELATÓRIO DE ACESSOS - USUÁRIO VOIP</h1>
+<div align="center">Olá, <b><?php echo $_SESSION['nome'] ?></b> <a href="logout.php">-  SAIR</a></div>
+
 <form action="" enctype="multipart/form-data" name="busca" method="post">
     <div align="center">
         <h2>Mês:                            
@@ -65,9 +69,9 @@ include('conexao.php');
                 <td align="center"><?php echo $cpf ?></td>
                 <td align="center"><?php echo ($evento == "ADDAGENT" ? "ENTROU" : "SAIU") ?></td>
             </tr>
-        <?php
+            <?php
+        }
     }
-}
-?>
+    ?>
 </table>
-    <?php ?>
+<?php ?>
